@@ -1,0 +1,48 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+rname = 'esttab/Regression/'
+linlasso = np.loadtxt(rname+'/hy_%s_%s.txt'%("linlasso", "reg")) 
+RF = np.loadtxt(rname+'/hy_%s_%s.txt'%("RF", "reg")) 
+
+returns_df = pd.read_excel('src/Returns_Clean.xlsx')
+flows_df = pd.read_excel('src/Flows_Clean.xlsx')
+
+plt.figure()
+plt.plot(linlasso, label='alphas')
+ax = plt.gca()
+ax.spines['bottom'].set_color('black')
+ax.spines['left'].set_color('black')
+ax.spines['top'].set_visible(False)
+ax.spines['bottom'].set_visible(True)
+ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(True)
+plt.grid(True, 'major', ls='--', lw=.5, c='k', alpha=.15)
+plt.grid(True, 'minor', ls=':', lw=.5, c='k', alpha=.3)
+plt.plot(np.repeat(np.mean(linlasso),100), c='r', ls='dashed',label=str(round(np.mean(linlasso),4)))
+plt.title('Alpha Selected for Different Stocks')
+plt.legend(frameon=False)
+plt.xlabel('Stock ID')
+plt.ylabel('Alphas')
+plt.tight_layout()
+plt.savefig('gph/hyper_linlasso.pdf')
+
+
+plt.figure()
+plt.plot(RF, label='min samples leaf')
+ax = plt.gca()
+ax.spines['bottom'].set_color('black')
+ax.spines['left'].set_color('black')
+ax.spines['top'].set_visible(False)
+ax.spines['bottom'].set_visible(True)
+ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(True)
+plt.grid(True, 'major', ls='--', lw=.5, c='k', alpha=.15)
+plt.grid(True, 'minor', ls=':', lw=.5, c='k', alpha=.3)
+plt.plot(np.repeat(np.mean(RF),100), c='r', ls='dashed', label=str(round(np.mean(RF),4)))
+plt.title('Min Samples Leaf Selected for Different Stocks')
+plt.legend(frameon=False)
+plt.xlabel('Stock ID')
+plt.ylabel('min samples leaf')
+plt.tight_layout()
+plt.savefig('gph/hyper_RF.pdf')
